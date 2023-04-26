@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RobotPiece
 {
-    //Class meant to manage a single instantiated piece of the robot
+    //Class created to manage a single instantiated
+    //piece of the robot
 
     private GameObject sprite;
     private float mass;

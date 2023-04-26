@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LeverBehaviour : MonoBehaviour
 {
+    //This script create the lever mechanic
     public GameObject LeverSlider;
     public GameObject NumberDisplayText;
 

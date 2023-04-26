@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WorldDisplayBehaviour : MonoBehaviour
 {
+    //This script controls world displays that
+    //have a number of uses
+
     private GameObject targetObject;
     private Vector3 offset;
 

@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class AnimatedBehaviour : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
+    //This script allows any animated object to call
+    //any method on the Game Manager
+    
     public void CallMethod(string method)
     {
         Type t = GameBehaviour.instance.GetType();

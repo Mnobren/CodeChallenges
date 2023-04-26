@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MainCameraBehaviour : MonoBehaviour
 {
+    //This script manages the main camera and
+    //forces the aspect ratio
+
     public GameObject secondarycam;
     float fixedratio = (1920/1080);
     float width = 1920;

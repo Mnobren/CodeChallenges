@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class StageBehaviour : MonoBehaviour
 {
+    //This script manages every stage, one instance for each stage.
+
     public static StageBehaviour instance = null;
 
     public int stageDifficult = 0;
@@ -71,8 +73,6 @@ public class StageBehaviour : MonoBehaviour
     public void StartGame()
     {
         playing = true;
-        //Disable answer button
-        launchButton.GetComponent<Button>().interactable = false;
         //Set up a new array of pieces
         currentPieces = new RobotPiece[2];
         //Create a new robot to be built
@@ -165,8 +165,8 @@ public class StageBehaviour : MonoBehaviour
         //Enable the button so the player can answer
         launchButton.GetComponent<Button>().interactable = true;
         //Spawn displays to show mass of pieces
-        int d1 = ShowWorldDisplay(currentPieces[0].GetSprite(), world.transform, currentPieces[0].GetMass().ToString(), new Vector3(0, -0.8f, 0));
-        int d2 = ShowWorldDisplay(currentPieces[1].GetSprite(), world.transform, currentPieces[1].GetMass().ToString(), new Vector3(0, -0.8f, 0));
+        int d1 = ShowWorldDisplay(currentPieces[0].GetSprite(), world.transform, currentPieces[0].GetMass().ToString(), new Vector3(0, -1f, 0));
+        int d2 = ShowWorldDisplay(currentPieces[1].GetSprite(), world.transform, currentPieces[1].GetMass().ToString(), new Vector3(0, -1f, 0));
         //Add reference to display on RobotPiece
         currentPieces[0].SetDisplay(currentDisplays[d1]);
         currentPieces[1].SetDisplay(currentDisplays[d2]);
@@ -174,6 +174,8 @@ public class StageBehaviour : MonoBehaviour
 
     public void InputAnswer()
     {
+        //Disable answer button
+        launchButton.GetComponent<Button>().interactable = false;
         //Clear RobotPieces
         foreach(RobotPiece p in currentPieces) { p.DestroyGameObjects(); }
         //Calculate correct answer
@@ -216,18 +218,24 @@ public class StageBehaviour : MonoBehaviour
 
     void GameWon()
     {
-        //Stop game
-        playing = false;
-        //Show game over screen
-        winScreen.SetActive(true);
+        if(playing)
+        {
+            //Stop game
+            playing = false;
+            //Show game over screen
+            winScreen.SetActive(true);
+        }
     }
 
     void GameOver()
     {
-        //Stop game
-        playing = false;
-        //Show game over screen
-        overScreen.SetActive(true);
+        if(playing)
+        {
+            //Stop game
+            playing = false;
+            //Show game over screen
+            overScreen.SetActive(true);
+        }
     }
 
     int ShowWorldDisplay(GameObject target, Transform parent, string text, Vector3 offset)
@@ -239,5 +247,10 @@ public class StageBehaviour : MonoBehaviour
         int index = currentDisplays.Count;
         currentDisplays.Add(newDisplay);
         return index;
+    }
+
+    public bool isPlaying()
+    {
+        return playing;
     }
 }

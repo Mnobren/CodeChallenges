@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class GameBehaviour : MonoBehaviour
 {
+    //This script manages the game as a whole, that is mostly scene
+    //transitions and in the future cross-sessions
+
     public static GameBehaviour instance = null;
 
     void Awake()
@@ -20,8 +23,6 @@ public class GameBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-
-        Screen.SetResolution(1920, 1080, false);
     }
 
     public void Start()
@@ -44,42 +45,43 @@ public class GameBehaviour : MonoBehaviour
 
     public void ChangeScene(string name)
     {
+        //Loads a new scene by name
         SceneManager.LoadScene(name);
     }
 
     public void Destroy(GameObject go)
     {
+        //Destroys any GameObject
         MonoBehaviour.Destroy(go);
     }
 
     public void QuitGame()
     {
+        //Quit the game
         Application.Quit();
     }
 
     //Animation Events
     public void SuccessfulDeploy()
     {
+        //After Robot part is in place calls StageBehaviour to proceed with calculations
         StageBehaviour.instance.ConfirmDeploy();
     }
     public void ResolutionCorrect()
     {
+        //Spawns the launched robot in the battlefield
         StageBehaviour.instance.ReleaseRobot();
-        StageBehaviour.instance.StartGame();
+        //Prepares to Generate a new robot and question
+        if(StageBehaviour.instance.isPlaying()) { StageBehaviour.instance.StartGame(); }
     }
     public void ResolutionLight()
     {
-        StageBehaviour.instance.StartGame();
+        //Prepares to Generate a new robot and question
+        if(StageBehaviour.instance.isPlaying()) { StageBehaviour.instance.StartGame(); }
     }
     public void ResolutionHeavy()
     {
-        StageBehaviour.instance.StartGame();
+        //Prepares to Generate a new robot and question
+        if(StageBehaviour.instance.isPlaying()) { StageBehaviour.instance.StartGame(); }
     }
-
-    /* #region */ //Local Methods
-
-    
-
-    /* #region */
-
 }
