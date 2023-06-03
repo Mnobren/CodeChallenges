@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterBehaviour : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class CharacterBehaviour : MonoBehaviour
 
     private Rigidbody2D body;
     private Animator animator;
-
     private Vector3 direction;
+    private GameObject[] equip;
 
     public delegate void ArgLess();
     public delegate void OneString(string one);
@@ -21,6 +22,7 @@ public class CharacterBehaviour : MonoBehaviour
     {
         body = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
+        equip = new GameObject[3];
     }
 
     void Start()
@@ -61,15 +63,26 @@ public class CharacterBehaviour : MonoBehaviour
 
     public void EquipApparel(GameObject app, ArgLess moveMethod, OneString animateMethod)
     {
-        app.transform.position = transform.position;
+        app.GetComponent<ApparelBehaviour>().SetWearer(transform);
+        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
+        if(equip[(sprite.sortingOrder/2)-1] != null)
+        {
+            UnequipApparel( equip[(sprite.sortingOrder/2)-1],
+                            equip[(sprite.sortingOrder/2)-1].GetComponent<ApparelBehaviour>().UpdatePosition,
+                            equip[(sprite.sortingOrder/2)-1].GetComponent<ApparelBehaviour>().UpdateAnimation);
+        }
+        equip[(sprite.sortingOrder/2)-1] = app;
         MoveEvent += moveMethod;
         AnimateEvent += animateMethod;
+        app.transform.position = transform.position;
     }
 
     public void UnequipApparel(GameObject app, ArgLess moveMethod, OneString animateMethod)
     {
         MoveEvent -= moveMethod;
         AnimateEvent -= animateMethod;
+        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
+        equip[(sprite.sortingOrder/2)-1] = null;
         Destroy(app);
     }
 
@@ -78,11 +91,27 @@ public class CharacterBehaviour : MonoBehaviour
 
     private void AnimateChildObject(string trigger)
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             Transform child = transform.GetChild(i);
-            child.gameObject.GetComponent<Animator>().SetTrigger(trigger);
+            if(child.GetComponent<Animator>() != null)
+            {
+                child.gameObject.GetComponent<Animator>().SetTrigger(trigger);
+            }
         }
+    }
+
+    public GameObject GetCueDisplay()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if(child.GetComponent<Canvas>() != null)
+            {
+                return child.GetComponentInChildren<Image>().gameObject;
+            }
+        }
+        return null;
     }
 
     //

@@ -8,33 +8,33 @@ public class ApparelBehaviour : MonoBehaviour
 
     private Animator animator;
 
-    void Awake()
-    {
-        SetWearer(wearer);
+    private float value;
 
-        animator = gameObject.GetComponent<Animator>();
-    }
-
-/*deprecated
-    void Update()
+    void Start()
     {
-        if(wearer != null) { gameObject.transform.position = wearer.position; }
+        animator = gameObject.GetComponent<Animator>();//Must be on Start()!
     }
-*/
 
     public void SetWearer(Transform wearer)
     {
         this.wearer = wearer;
-        wearer.GetComponent<CharacterBehaviour>().EquipApparel(gameObject, UpdatePosition, UpdateAnimation);
     }
 
     public void UpdatePosition()
     {
-        gameObject.transform.position = wearer.position;
+        if(gameObject != null) gameObject.transform.position = wearer.position;
     }
 
     public void UpdateAnimation(string trigger)
     {
-        animator.SetTrigger(trigger);
+        if(animator != null) animator.SetTrigger(trigger);
+    }
+
+
+    //GetSet
+
+    public void SetValue(float value)
+    {
+        this.value = value;
     }
 }
