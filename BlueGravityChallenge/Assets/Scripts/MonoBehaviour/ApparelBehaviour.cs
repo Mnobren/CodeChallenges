@@ -16,27 +16,29 @@ public class ApparelBehaviour : MonoBehaviour
 
     void Start()
     {
+        //Setup components
         animator = gameObject.GetComponent<Animator>();//Must be on Start()!
-    }
-
-    public void SetWearer(Transform wearer)
-    {
-        this.wearer = wearer;
     }
 
     public void UpdatePosition()
     {
+        //Move apparel to wearer location
         if(gameObject != null) gameObject.transform.position = wearer.position;
     }
 
     public void UpdateAnimation(string trigger)
     {
+        //Trigger apparel animation
         if(animator != null) animator.SetTrigger(trigger);
     }
 
 
     //GetSet
 
+    public void SetWearer(Transform wearer)
+    {
+        this.wearer = wearer;
+    }
     public void SetColor(Color color)
     {
         this.color = color;

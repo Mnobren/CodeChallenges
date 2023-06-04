@@ -8,11 +8,13 @@ public class GameCameraBehaviour : MonoBehaviour
     
     void Start()
     {
+        //Find player
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
+        //Update camera position to follow player
         Vector3 pos = player.transform.position;
         gameObject.transform.position = pos + new Vector3(0, 0, -10);
     }

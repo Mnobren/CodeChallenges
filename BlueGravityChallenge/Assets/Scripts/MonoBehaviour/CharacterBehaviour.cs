@@ -19,19 +19,23 @@ public class CharacterBehaviour : MonoBehaviour
 
     void Awake()
     {
+        //Setup components
         body = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
     }
 
     void Start()
     {
+        //Subscribe the method to animate limbs
         AnimateEvent += AnimateChildObject;
     }
 
     void Update()
     {
+        //If movement is greater than zero then raise event
         if(direction.magnitude > 0) { RaiseMovementEvent(); }
 
+        //If any WASD key was pressed or released then check direction of movement
         if( Input.GetButtonDown("Walk Up") || Input.GetButtonDown("Walk Left") || Input.GetButtonDown("Walk Down") || Input.GetButtonDown("Walk Right")
             || Input.GetButtonUp("Walk Up") || Input.GetButtonUp("Walk Left") || Input.GetButtonUp("Walk Down") || Input.GetButtonUp("Walk Right"))
         {
@@ -42,10 +46,14 @@ public class CharacterBehaviour : MonoBehaviour
             if(Input.GetButton("Walk Right")) { direction += Vector3.right; }
             Vector3.Normalize(direction);
         }
+
+        //Prevent any rotations
+        transform.rotation = Quaternion.identity;
     }
 
     void FixedUpdate()
     {
+        //Every fixed frame set trigger for animations
         body.velocity = direction * speed * Time.fixedDeltaTime;
         if(direction.magnitude > 0)
         {
@@ -61,10 +69,12 @@ public class CharacterBehaviour : MonoBehaviour
 
     public void EquipApparel(GameObject app, ArgLess moveMethod, OneString animateMethod)
     {
+        //Attach apparel to character
         app.GetComponent<ApparelBehaviour>().SetWearer(transform);
-        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
+        app.transform.position = transform.position;
 
         //Manage array of equipped apparel
+        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
         GameObject[] equipped = GameBehaviour.instance.GetEquipped();
         if(equipped[(sprite.sortingOrder/2)-1] != null)
         {
@@ -75,35 +85,37 @@ public class CharacterBehaviour : MonoBehaviour
         equipped[(sprite.sortingOrder/2)-1] = app;
         GameBehaviour.instance.SetEquipped(equipped);
 
-        //Manage Event subscriptions
+        //Subscribe apparel to events so the apparel follows charater
         MoveEvent += moveMethod;
         AnimateEvent += animateMethod;
-        app.transform.position = transform.position;
     }
 
     public void UnequipApparel(GameObject app, ArgLess moveMethod, OneString animateMethod)
     {
+        //Unsubscribe from events
         MoveEvent -= moveMethod;
         AnimateEvent -= animateMethod;
-        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
         
         //Manage array of equipped apparel
+        SpriteRenderer sprite = app.GetComponent<SpriteRenderer>();
         GameObject[] equipped = GameBehaviour.instance.GetEquipped();
         equipped[(sprite.sortingOrder/2)-1] = null;
         GameBehaviour.instance.SetEquipped(equipped);
 
-        //Manage unequepped apparel
+        //Manage unequipped apparel
         if(app.GetComponent<ApparelBehaviour>().IsAcquired()) { GameBehaviour.instance.MoveToInv(app); }
         else { Destroy(app); }
     }
 
 
-    //ChildObject Related
+    //ChildObject Related//
 
     private void AnimateChildObject(string trigger)
     {
+        //Method to animate limbs
         for(int i = 0; i < 4; i++)
         {
+            //
             Transform child = transform.GetChild(i);
             if(child.GetComponent<Animator>() != null)
             {
@@ -114,6 +126,7 @@ public class CharacterBehaviour : MonoBehaviour
 
     public GameObject GetCueDisplay()
     {
+        //Return cue current display
         for(int i = 0; i < 4; i++)
         {
             Transform child = transform.GetChild(i);
@@ -139,13 +152,6 @@ public class CharacterBehaviour : MonoBehaviour
     {
         if(AnimateEvent != null) { AnimateEvent(trigger); }
     }
-
-    //
-
-
-    //GetSet
-
-
 
     //
 }

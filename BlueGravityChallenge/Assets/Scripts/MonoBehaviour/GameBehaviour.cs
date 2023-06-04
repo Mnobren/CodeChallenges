@@ -50,40 +50,26 @@ public class GameBehaviour : MonoBehaviour
 
     public void Update()
     {
+        //If player presses Q open/close inventory
         if(Input.GetButtonDown("Inventory")) { AlternateWindow(); }
-    }
-
-    void OnEnable()
-    {//Adds to sceneLoaded event a delegate pointing to LevelJustLoaded
-        SceneManager.sceneLoaded += LevelJustLoaded;
-    }
-
-    void OnDisable()
-    {//Subtracts from sceneLoaded event a delegate pointing to LevelJustLoaded
-        SceneManager.sceneLoaded -= LevelJustLoaded;
-    }
-
-    void LevelJustLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (SceneManager.GetActiveScene().name == "MainMenu")
-        {
-        }
     }
 
     public void ChangeScene(string name)
     {
+        //Load scene with name
         SceneManager.LoadScene(name);
     }
 
     public bool SpendMoney(float value)
     {
+        //If money can be spent update the display
         if(value <= currentMoney)
         {
             currentMoney -= value;
             UpdateMoneyDisplay();
             return true;
         }
-        else
+        else//Else, show error message
         {
             ShowCue("Insufficient money", 2f);
             return false;
@@ -92,15 +78,18 @@ public class GameBehaviour : MonoBehaviour
 
     public void UpdateMoneyDisplay()
     {
+        //Format float into string
         moneyDisplay.text = currentMoney.ToString()+" $";
     }
 
+    //"Remove" apparel from world and add to inventory
     public void MoveToInv(GameObject apparel)
     {
         inventory.Add(apparel);
         apparel.SetActive(false);
     }
 
+    //Remove apparel from inventory and "add" to world
     public void MoveToWorld(GameObject apparel)
     {
         apparel.SetActive(true);
@@ -110,20 +99,24 @@ public class GameBehaviour : MonoBehaviour
 
     //UI//
 
+    //Alternate window between open and closed
     public void AlternateWindow()
     {
         if(!window.gameObject.activeSelf) { window.OpenWindow(); }
         else if(window.gameObject.activeSelf) { window.CloseWindow(); }
     }
-    
+
+    //Show cue for seconds
     public void ShowCue(string message, float seconds)
     {
         CancelInvoke();
         cue.GetComponentInChildren<Text>().text = message;
         cue.GetComponentInParent<Canvas>(true).gameObject.SetActive(true);
+        //Automatically hide cue after seconds
         Invoke("HideCue", seconds);
     }
 
+    //Hide cue early or after seconds passed
     public void HideCue(string message)
     {
         if(cue.GetComponentInChildren<Text>().text == message)
@@ -133,12 +126,14 @@ public class GameBehaviour : MonoBehaviour
         }
     }
 
+    //Show tutorial UI
     public void ShowInteraction(string verb)
     {
         eKey.GetComponentInChildren<Text>(true).text = verb;
         eKey.SetActive(true);
     }
 
+    //Hide tutorial UI
     public void HideInteraction(string verb)
     {
         if(eKey.GetComponentInChildren<Text>(true).text == verb)

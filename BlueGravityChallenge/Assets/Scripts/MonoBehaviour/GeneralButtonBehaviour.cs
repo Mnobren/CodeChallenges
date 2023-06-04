@@ -7,6 +7,7 @@ public class GeneralButtonBehaviour : MonoBehaviour
 {
     public void ChangeScene(string name)
     {
+        //Load scene with name
         SceneManager.LoadScene(name);
     }
 }

@@ -16,6 +16,7 @@ public class WindowBehaviour : MonoBehaviour
 
     void Awake()
     {
+        //Setup array attributtes
         inventoryOnDisplay = new GameObject[9];
         equippedOnDisplay = new GameObject[3];
         inventorySlots = new GameObject[9];
@@ -41,7 +42,9 @@ public class WindowBehaviour : MonoBehaviour
             }
         }
 
+        //Self reference to GameBehaviour
         GameBehaviour.instance.SetWindow(this);
+        //Hide window as soon as possible
         gameObject.SetActive(false);
     }
 
@@ -51,8 +54,11 @@ public class WindowBehaviour : MonoBehaviour
         int i = 0;
         foreach(GameObject app in equipped)
         {
+            //As long as slot is occupied
             if(app != null)
             {
+                //Setup icon
+                equippedOnDisplay[i] = equipped[i];
                 equippedSlots[i].GetComponentInChildren<IconBehaviour>().SetUp( equipped[i],
                                                                                 equipped[i].GetComponent<ApparelBehaviour>().GetColor(),
                                                                                 equipped[i].GetComponent<ApparelBehaviour>().GetIcon());
@@ -63,24 +69,44 @@ public class WindowBehaviour : MonoBehaviour
 
     public void OpenWindow()
     {
+        PopulateWindow();
+        gameObject.SetActive(true);
+    }
+
+    public void CloseWindow()
+    {
+        ClearWindow();
+        gameObject.SetActive(false);
+    }
+
+    public void PopulateWindow()
+    {
+        //Manage icons of stored apparel
         List<GameObject> inventory = GameBehaviour.instance.GetInventory();
         int i = 0;
         foreach(GameObject app in inventory)
         {
+            //As long as slot is occupied
             if(app != null)
             {
+                //Spawn and setup icon
                 GameObject button = Instantiate(icon, inventorySlots[i].transform.position, Quaternion.identity, inventorySlots[i].transform);
+                inventoryOnDisplay[i] = button;
                 button.GetComponent<IconBehaviour>().SetUp( app,
                                                             app.GetComponent<ApparelBehaviour>().GetColor(),
                                                             app.GetComponent<ApparelBehaviour>().GetIcon());
                 i++;
             }
         }
-        gameObject.SetActive(true);
     }
 
-    public void CloseWindow()
+    public void ClearWindow()
     {
-        gameObject.SetActive(false);
+        //Clear icons to refresh
+        for(int i = 0; i < inventoryOnDisplay.Length; i++)
+        {
+            Destroy(inventoryOnDisplay[i]);
+            inventoryOnDisplay[i] = null;
+        }
     }
 }

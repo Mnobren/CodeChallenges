@@ -15,24 +15,21 @@ public class StandBehaviour : MonoBehaviour
 
     void Awake()
     {
+        //Find player
         player = GameObject.FindGameObjectWithTag("Player");
+        //Format price to string
         price = value.ToString()+" $";
     }
-
-/*///////////////////////////
-    void Start()
-    {
-        SpriteRenderer sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        sprite.sprite = apparel.GetComponent<SpriteRenderer>().sprite;
-
-    }
-////////////////////////////*/
+    
     void Update()
     {
+        //When player is close enough
         if(checking)
         {
+            //And E key is pressed
             if(Input.GetButtonDown("Interact"))
             {
+                //Player try out the apparel
                 GameObject app = Instantiate(apparel);
                 ApparelBehaviour behaviour = app.GetComponent<ApparelBehaviour>();
                 SpriteRenderer sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
@@ -48,6 +45,7 @@ public class StandBehaviour : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        //Show tutorial when player is close enough
         if(other.gameObject == player)
         {
             GameBehaviour.instance.ShowCue(price, 30f);
@@ -58,6 +56,7 @@ public class StandBehaviour : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
+        //Hide tutorial when player is too far
         if(other.gameObject == player)
         {
             GameBehaviour.instance.HideCue(price);
