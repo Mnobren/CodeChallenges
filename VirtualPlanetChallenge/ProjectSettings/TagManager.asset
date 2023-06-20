@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FocusCamera
   layers:
   - Default
   - TransparentFX
@@ -46,4 +47,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 2445077265
+    locked: 0
+  - name: HUD
+    uniqueID: 3274558373
     locked: 0

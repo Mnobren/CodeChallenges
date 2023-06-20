@@ -6,6 +6,10 @@ using UnityEngine.Rendering.Universal;
 public class CameraBehaviour : MonoBehaviour
 {
     public GameObject secondarycam;
+
+    private Camera component;
+    private float standard;
+
     float width = 1280;
     float height = 720;
 
@@ -25,5 +29,38 @@ public class CameraBehaviour : MonoBehaviour
 
     void Start()
     {
+        component = GetComponent<Camera>();
+        standard = component.farClipPlane;
     }
+
+    public void OnEnable()
+    {
+        Camera.onPreCull += PreCullAdjustFOV;
+        Camera.onPreRender += PreRenderAdjustFOV;
+    }
+
+    public void OnDisable()
+    {
+        Camera.onPreCull -= PreCullAdjustFOV;
+        Camera.onPreRender -= PreRenderAdjustFOV;
+    }
+
+    #region avoid frustum culling
+    public void PreRenderAdjustFOV(Camera cam)
+    {
+        if (cam == component)
+        {
+            component.farClipPlane = standard;
+        }
+    }
+
+    public void PreCullAdjustFOV(Camera cam)
+    {
+        if (cam == component)
+        {
+            standard = component.farClipPlane;
+            component.farClipPlane = 100;
+        }
+    }
+    #endregion
 }
