@@ -123,18 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &383966779 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6487551869844860279, guid: f633a3725cb54a04c84f849eeda0e1e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 407564788257015428}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0891e0a95c63f804391723d4bac3d1e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &390068955
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +536,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 383966779}
+      - m_Target: {fileID: 6487551869844860279, guid: f633a3725cb54a04c84f849eeda0e1e4,
+          type: 3}
         m_TargetAssemblyTypeName: GameBehaviour, Assembly-CSharp
         m_MethodName: ChangeScene
         m_Mode: 5
