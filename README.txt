@@ -1,1 +1,1 @@
-commit inicial
+Aplicativo em desenvolvimento
