@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameControlBehaviour : MonoBehaviour
 {
     public static GameControlBehaviour instance = null;
 
-    public List<QuestionScript> Questions;
+    public QuestionScript[] Questions;
     private TMP_Text Label;
-    private List<TMP_Text> Buttons = new List<TMP_Text>();
+    private List<GameObject> Buttons = new List<GameObject>();
     private GameObject Result;
 
     private int numberQuestions = 0;
@@ -47,7 +49,6 @@ public class GameControlBehaviour : MonoBehaviour
 
     void LevelJustLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log(scene.name);
         if(scene.name == "QuizScene")
         {
             SetUpQuiz();
@@ -63,55 +64,58 @@ public class GameControlBehaviour : MonoBehaviour
 
     public void SetUpQuiz()
     {
-        if (numberQuestions == 0) { numberQuestions = Questions.Count; }
+        if (numberQuestions == 0) { numberQuestions = Questions.Length; }
         if (currentQuestion == 0) { currentQuestion = 1; }
         Fetch();
         HideResult();
-        SetUpQuestion(currentQuestion);
+        SetUpQuestion(currentQuestion-1);
     }
 
     public void Fetch()
     {
+        Buttons.Clear();
+        Buttons.Add(GameObject.FindGameObjectWithTag("OptionA"));
+        Buttons.Add(GameObject.FindGameObjectWithTag("OptionB"));
+        Buttons.Add(GameObject.FindGameObjectWithTag("OptionC"));
+        Buttons.Add(GameObject.FindGameObjectWithTag("OptionD"));
         Label = GameObject.FindGameObjectWithTag("Label").GetComponent<TMP_Text>();
-        Buttons.Add(GameObject.FindGameObjectWithTag("OptionA").GetComponentInChildren<TMP_Text>());
-        Buttons.Add(GameObject.FindGameObjectWithTag("OptionB").GetComponentInChildren<TMP_Text>());
-        Buttons.Add(GameObject.FindGameObjectWithTag("OptionC").GetComponentInChildren<TMP_Text>());
-        Buttons.Add(GameObject.FindGameObjectWithTag("OptionD").GetComponentInChildren<TMP_Text>());
         Result = GameObject.FindGameObjectWithTag("Result");
     }
 
     public void SetUpQuestion(int index)
     {
         Label.text = Questions[index].name;
-        Buttons[0].text = Questions[index].optionA;
-        Buttons[1].text = Questions[index].optionB;
-        Buttons[2].text = Questions[index].optionC;
-        Buttons[3].text = Questions[index].optionD;
-        for(int i = 0; i < 4; i++)
-        {
-            Buttons[i].gameObject.GetComponent<Button>().onClick.AddListener( delegate{ ShowResult(index, i); } );;
-        }
+        Buttons[0].GetComponentInChildren<TMP_Text>().text = Questions[index].optionA;
+        Buttons[1].GetComponentInChildren<TMP_Text>().text = Questions[index].optionB;
+        Buttons[2].GetComponentInChildren<TMP_Text>().text = Questions[index].optionC;
+        Buttons[3].GetComponentInChildren<TMP_Text>().text = Questions[index].optionD;
+        Buttons[0].gameObject.GetComponent<Button>().onClick.AddListener( delegate{ ShowResult(0, index); } );
+        Buttons[1].gameObject.GetComponent<Button>().onClick.AddListener( delegate{ ShowResult(1, index); } );
+        Buttons[2].gameObject.GetComponent<Button>().onClick.AddListener( delegate{ ShowResult(2, index); } );
+        Buttons[3].gameObject.GetComponent<Button>().onClick.AddListener( delegate{ ShowResult(3, index); } );
     }
 
-    public void ShowResult(int index, int i)
+    public void ShowResult(int i, int index)
     {
-        Text T = Result.GetComponentInChildren<Text>();
+        Result.SetActive(true);
+        TMP_Text T = Result.GetComponentInChildren<TMP_Text>();
         if (i == 0) T.text = Questions[index].answerA;
         else if (i == 1) T.text = Questions[index].answerB;
         else if (i == 2) T.text = Questions[index].answerC;
         else if (i == 3) T.text = Questions[index].answerD;
         else { Debug.Log("Erro"); };
-        Result.SetActive(true);
+        Result.GetComponentInChildren<Button>().onClick.AddListener( NextQuestion );
     }
 
-    public void HideResult()////////////////////////////////////////////////////////
+    public void HideResult()
     {
         Result.SetActive(false);
-    }//////////////////////////////////////////////////////////////////////////////
+    }
 
     public void NextQuestion()
     {
-        if(Questions[currentQuestion+1] != null)
+        currentQuestion++;
+        if(currentQuestion <= numberQuestions)
         {
             ChangeScene("QuizScene");
         }
