@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Question1
   m_EditorClassIdentifier: 
   name: "Ser\xE1 que qualquer op\xE7\xE3o \xE9 correta?"
+  optionsRight: 1
   optionA: Sim
   optionB: "N\xE3o"
   optionC: Talvez
@@ -20,4 +21,4 @@ MonoBehaviour:
   answerA: "Voc\xEA achou que qualquer op\xE7\xE3o era correta? :("
   answerB: Acertou !
   answerC: Meio que acertou ?
-  answerD: "A resposta \xE9 n\xE3o..."
+  answerD: "A resposta \xE9 B, n\xE3o"

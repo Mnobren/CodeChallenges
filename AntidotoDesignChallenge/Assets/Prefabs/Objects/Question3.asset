@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f57f47f83e4e847a8242dcafa59305, type: 3}
   m_Name: Question3
   m_EditorClassIdentifier: 
-  name: 
-  optionA: 
-  optionB: 
-  optionC: 
-  optionD: 
-  answerA: 
-  answerB: 
-  answerC: 
-  answerD: 
+  name: "Ser\xE1 que o jogo volta para o come\xE7o depois desta quest\xE3o ?"
+  optionsRight: 3
+  optionA: Deveria
+  optionB: "Essa \xE9 a \xFAltima quest\xE3o ?"
+  optionC: "N\xE3o"
+  optionD: Com certeza
+  answerA: Bem pensado
+  answerB: Boa pergunta. Sim.
+  answerC: Errou
+  answerD: Acertou !

@@ -10,6 +10,7 @@ TagManager:
   - OptionC
   - OptionD
   - Result
+  - Counter
   layers:
   - Default
   - TransparentFX

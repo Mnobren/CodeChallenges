@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f57f47f83e4e847a8242dcafa59305, type: 3}
   m_Name: Question2
   m_EditorClassIdentifier: 
-  name: 
-  optionA: 
-  optionB: 
-  optionC: 
-  optionD: 
-  answerA: 
-  answerB: 
-  answerC: 
-  answerD: 
+  name: "Ser\xE1 que tem tr\xEAs perguntas neste Quiz ?"
+  optionsRight: 1
+  optionA: Depende
+  optionB: "N\xE3o"
+  optionC: Sim
+  optionD: "Est\xE1 escrito 2/3 no canto superior direito"
+  answerA: "Bem pensado, depende do que voc\xEA considera uma pergunta"
+  answerB: "Acertou ! Existem tr\xEAs quest\xF5es neste quiz, mas n\xE3o exatamente
+    perguntas"
+  answerC: "Existem tr\xEAs quest\xF5es neste quiz, mas n\xE3o exatamente perguntas"
+  answerD: "Existem tr\xEAs quest\xF5es neste quiz, mas n\xE3o exatamente perguntas"
